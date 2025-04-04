@@ -38,12 +38,12 @@
         <!-- Right navbar links -->
         <ul class="navbar-nav ml-auto">
             <li class="nav-item">
-                {{--<form action="{{ route('logout') }}" method="POST">
+                <form action="{{ route('logout') }}" method="POST">
                     @csrf
                     <button type="submit" class="nav-link bg-transparent border-0 hover" title="Выйти из аккаунта">
                         <i class="fas fa-sign-out-alt"></i>
                     </button>
-                </form>--}}
+                </form>
             </li>
         </ul>
     </nav>
@@ -58,6 +58,12 @@
 
         <!-- Sidebar -->
         <div class="sidebar">
+            <!-- Sidebar user panel (optional) -->
+            <div class="user-panel mt-3 pb-3 mb-3 d-flex">
+                <div class="info">
+                    <a href="#" class="d-block">{{ auth()->user()->name }}</a>
+                </div>
+            </div>
 
             <!-- Sidebar Menu -->
             <nav class="mt-2">
