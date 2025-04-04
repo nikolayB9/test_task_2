@@ -8,6 +8,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     })->name('index');
 
     Route::post('logout', [\App\Http\Controllers\AuthController::class, 'destroy'])->name('logout');
+
+    Route::resource('users', \App\Http\Controllers\UserController::class);
 });
 
 Route::middleware('guest')->group(function () {
