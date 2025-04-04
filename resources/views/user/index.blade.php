@@ -12,6 +12,9 @@
 
                     <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Добавить пользователя</a>
 
+                    @if (session('success'))
+                        <x-alert-success :message="session('success')"/>
+                    @endif
 
                     <div class="card">
                         <div class="card-body">
@@ -51,8 +54,8 @@
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
                                         <td>{{ \App\Enums\User\RoleEnum::getDescription($user->role) }}</td>
-                                        <td>{{ $user->created }}</td>
-                                        <td>{{ $user->updated }}</td>
+                                        <td>{{ $user->created_at }}</td>
+                                        <td>{{ $user->updated_at }}</td>
                                         <td>{{ $user->is_active }}</td>
 
                                         <td>
@@ -68,8 +71,6 @@
                                 </tbody>
                             </table>
                         </div><!-- /.card-body -->
-
-
                     </div>
                     <!-- /.card -->
                 </div>

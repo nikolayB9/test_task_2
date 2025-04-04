@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\User\RoleEnum;
+use App\Http\Requests\User\StoreRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -12,20 +14,22 @@ class UserController extends Controller
         return view('user.index', ['users' => User::all()]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+       return view('user.create');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(Request $request)
+    public function store(StoreRequest $request)
     {
-        //
+        $data = $request->validated();
+        User::create([
+            'name' => $data['name'],
+            'email' => $data['email'],
+            'role' => $data['role'],
+            'password' => $data['password'],
+            'order' => User::max('order') + 1,
+        ]);
+        return redirect()->route('users.index')->with('success', 'Пользователь добавлен');
     }
 
     /**
