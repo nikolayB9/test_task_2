@@ -29,8 +29,9 @@
                                                    required/>
 
                                 <x-select name="role">
+
                                     @foreach(\App\Enums\User\RoleEnum::asSelectArray() as $role)
-                                        <option @selected(old('role') === $role['value'])
+                                        <option @selected((int)old('role') === $role['value'])
                                                 value="{{ $role['value'] }}">{{ $role['name'] }}</option>
                                     @endforeach
                                 </x-select>

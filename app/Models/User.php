@@ -38,4 +38,14 @@ class User extends Authenticatable
             'is_active' => 'boolean',
         ];
     }
+
+    public function getCreatedAtAttribute($value): string
+    {
+        return \Illuminate\Support\Carbon::create($value)->format('Y-m-d');
+    }
+
+    public function getUpdatedAtAttribute($value): string
+    {
+        return \Illuminate\Support\Carbon::create($value)->format('Y-m-d');
+    }
 }
