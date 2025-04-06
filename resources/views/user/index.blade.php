@@ -10,6 +10,10 @@
             <div class="row">
                 <div class="col-12 mb-3">
 
+                    <div>
+                        <input id="chkToggle" type="checkbox" data-toggle="toggle">
+                    </div>
+
                     <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Добавить пользователя</a>
 
                     @if (session('success'))
@@ -79,4 +83,12 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    @push('scripts')
+        <script>
+            $(function(){
+                $('#chkToggle').bootstrapToggle();
+            });
+        </script>
+    @endpush
 </x-app-layout>
