@@ -27,6 +27,7 @@ class UserController extends Controller
             'role' => $data['role'],
             'password' => $data['password'],
             'order' => User::max('order') + 1,
+            'is_active' => !empty($data['is_active']),
         ]);
         return redirect()->route('users.index')->with('success', 'Пользователь добавлен');
     }

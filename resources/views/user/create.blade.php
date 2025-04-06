@@ -50,6 +50,10 @@
                                                    :messages="$errors->get('password_confirmation')"
                                                    required/>
 
+                                <x-input-switch name="is_active"
+                                                label="Активность"
+                                                :checked="$errors->has('failedValidation') ? (bool)old('is_active') : true"/>
+
                                 <div class="text-right">
                                     <button type="submit" class="btn btn-primary">Добавить</button>
                                 </div>

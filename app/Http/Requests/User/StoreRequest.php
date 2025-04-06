@@ -3,6 +3,7 @@
 namespace App\Http\Requests\User;
 
 use App\Enums\User\RoleEnum;
+use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 use Illuminate\Validation\Rules;
@@ -29,6 +30,12 @@ class StoreRequest extends FormRequest
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:users,email'],
             'role' => ['required', 'integer', Rule::enum(RoleEnum::class)],
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
+            'is_active' => ['nullable', 'string', 'in:on'],
         ];
+    }
+
+    protected function failedValidation(Validator $validator): void
+    {
+        $validator->errors()->add('failedValidation', true);
     }
 }
