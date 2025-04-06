@@ -1,4 +1,5 @@
 {
+    "name": "test_task_2",
     "private": true,
     "type": "module",
     "scripts": {
@@ -12,5 +13,9 @@
         "laravel-vite-plugin": "^1.2.0",
         "tailwindcss": "^4.0.0",
         "vite": "^6.2.4"
+    },
+    "dependencies": {
+        "bootstrap4-toggle": "^3.6.1",
+        "test_task_2": "file:"
     }
 }

@@ -56,7 +56,11 @@
                                         <td>{{ \App\Enums\User\RoleEnum::getDescription($user->role) }}</td>
                                         <td>{{ $user->created_at }}</td>
                                         <td>{{ $user->updated_at }}</td>
-                                        <td>{{ $user->is_active }}</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   {{ $user->is_active ? 'checked' : '' }} data-toggle="toggle"
+                                                   data-size="xs" data-id="{{ $user->id }}">
+                                        </td>
 
                                         <td>
                                             <a href="{{ route('users.edit', $user->id) }}"
@@ -79,4 +83,21 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    @push('scripts')
+        <script>
+            $('input[type="checkbox"]').change(function () {
+                let isChecked = $(this).prop('checked');
+                let userId = $(this).data('id');
+                $.ajax({
+                    url: `users/${userId}/toggle-activity`,
+                    type: 'PUT',
+                    data: {
+                        activity: isChecked ? 'active' : 'inactive',
+                        _token: '{{ csrf_token() }}'
+                    }
+                });
+            });
+        </script>
+    @endpush
 </x-app-layout>
