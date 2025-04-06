@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreRequest;
+use App\Http\Requests\User\ToggleActivityRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
+use http\Env\Request;
 
 class UserController extends Controller
 {
@@ -43,5 +45,12 @@ class UserController extends Controller
         $data['is_active'] = !empty($data['is_active']);
         $user->update($data);
         return redirect()->route('users.edit', $user->id)->with('success', 'Пользователь обновлен');
+    }
+
+    public function toggleActivity(ToggleActivityRequest $request, User $user): void
+    {
+        $user->update([
+           'is_active' => $request->input('is_active'),
+        ]);
     }
 }

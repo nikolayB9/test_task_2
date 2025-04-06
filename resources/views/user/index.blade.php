@@ -10,10 +10,6 @@
             <div class="row">
                 <div class="col-12 mb-3">
 
-                    <div>
-                        <input id="chkToggle" type="checkbox" data-toggle="toggle">
-                    </div>
-
                     <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Добавить пользователя</a>
 
                     @if (session('success'))
@@ -60,7 +56,11 @@
                                         <td>{{ \App\Enums\User\RoleEnum::getDescription($user->role) }}</td>
                                         <td>{{ $user->created_at }}</td>
                                         <td>{{ $user->updated_at }}</td>
-                                        <td>{{ $user->is_active }}</td>
+                                        <td>
+                                            <input type="checkbox"
+                                                   {{ $user->is_active ? 'checked' : '' }} data-toggle="toggle"
+                                                   data-size="xs" data-id="{{ $user->id }}">
+                                        </td>
 
                                         <td>
                                             <a href="{{ route('users.edit', $user->id) }}"
@@ -86,8 +86,17 @@
 
     @push('scripts')
         <script>
-            $(function(){
-                $('#chkToggle').bootstrapToggle();
+            $('input[type="checkbox"]').change(function () {
+                let isChecked = $(this).prop('checked');
+                let userId = $(this).data('id');
+                $.ajax({
+                    url: `users/${userId}/toggle-activity`,
+                    type: 'PUT',
+                    data: {
+                        activity: isChecked ? 'active' : 'inactive',
+                        _token: '{{ csrf_token() }}'
+                    }
+                });
             });
         </script>
     @endpush
