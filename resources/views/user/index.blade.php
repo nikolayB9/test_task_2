@@ -87,16 +87,12 @@
     @push('scripts')
         <script>
             $('input[type="checkbox"]').change(function () {
-                let isChecked = $(this).prop('checked');
-                let userId = $(this).data('id');
-                $.ajax({
-                    url: `users/${userId}/toggle-activity`,
-                    type: 'PUT',
-                    data: {
-                        activity: isChecked ? 'active' : 'inactive',
-                        _token: '{{ csrf_token() }}'
-                    }
-                });
+                const isChecked = $(this).prop('checked');
+                const userId = $(this).data('id');
+
+                axios.put(`users/${userId}/toggle-activity`, {
+                    activity: isChecked ? 'active' : 'inactive'
+                })
             });
         </script>
     @endpush
