@@ -31,9 +31,7 @@
                                 <x-select name="role">
                                     @foreach(\App\Enums\User\RoleEnum::asSelectArray() as $role)
                                         <option @selected(old('role') === $role['value'])
-                                                value="{{ $role['value'] }}">
-                                            {{ $role['name'] }}
-                                        </option>
+                                                value="{{ $role['value'] }}">{{ $role['name'] }}</option>
                                     @endforeach
                                 </x-select>
 

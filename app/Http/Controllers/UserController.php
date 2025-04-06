@@ -2,10 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\User\RoleEnum;
 use App\Http\Requests\User\StoreRequest;
+use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
-use Illuminate\Http\Request;
 
 class UserController extends Controller
 {
@@ -16,7 +15,7 @@ class UserController extends Controller
 
     public function create()
     {
-       return view('user.create');
+        return view('user.create');
     }
 
     public function store(StoreRequest $request)
@@ -32,35 +31,16 @@ class UserController extends Controller
         return redirect()->route('users.index')->with('success', 'Пользователь добавлен');
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(string $id)
+    public function edit(User $user)
     {
-        //
+        return view('user.edit', ['user' => $user]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(string $id)
+    public function update(UpdateRequest $request, User $user)
     {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, string $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(string $id)
-    {
-        //
+        $data = $request->validated();
+        $data['is_active'] = !empty($data['is_active']);
+        $user->update($data);
+        return redirect()->route('users.edit', $user->id)->with('success', 'Пользователь обновлен');
     }
 }
