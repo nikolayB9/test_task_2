@@ -10,6 +10,7 @@ class UserController extends Controller
 {
     public function index()
     {
+        //TODO test commit
         return view('user.index', ['users' => User::orderBy('order')->get()]);
     }
 
