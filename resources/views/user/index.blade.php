@@ -85,14 +85,10 @@
 
     @push('scripts')
         <script>
-            $('input[type="checkbox"]').change(function () {
-                const isChecked = $(this).prop('checked');
-                const userId = $(this).data('id');
-
-                axios.put(`users/${userId}/toggle-activity`, {
-                    activity: isChecked ? 'active' : 'inactive'
-                })
-            });
+            window.pageConfig = {
+                sortableUrl: '/users/update-order',
+                checkboxResource: 'users'
+            };
         </script>
     @endpush
 </x-app-layout>

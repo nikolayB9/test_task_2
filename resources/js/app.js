@@ -1,25 +1,17 @@
 import './bootstrap.js'
-import 'bootstrap4-toggle/js/bootstrap4-toggle.min';
-import Sortable from 'sortablejs';
+
+import setupSortable from "@/modules/sortable.js";
+import setupCheckboxes from "@/modules/checkboxes.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    const tableBody = document.getElementById('sortable-table');
-    if (tableBody) {
-        new Sortable(tableBody, {
-            animation: 150,
-            onEnd: function (evt)  {
-                const newOrder = Array.from(tableBody.children).map((row, index) => {
-                    return {
-                        id: row.dataset.id,
-                        order: index + 1
-                    }
-                });
+    const config = window.pageConfig;
 
-                axios.put('/users/update-order', {
-                    order: newOrder
-                })
-            }
-        });
+    if (config?.sortableUrl) {
+        setupSortable({ url: config.sortableUrl });
+    }
+
+    if (config?.checkboxResource) {
+        setupCheckboxes({ resource: config.checkboxResource });
     }
 });
 
