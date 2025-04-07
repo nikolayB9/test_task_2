@@ -20,11 +20,11 @@ trait GetsAttributes
     }
 
     /**
-     * @return array<string,string>
+     * @return array<array{name: string, value: int}>
      */
     public static function asSelectArray(): array
     {
-        /** @var array<string,string> $values */
+        /** @var array<array{name: string, value: int}> $values */
         $values = collect(self::cases())
             ->map(function ($enum) {
                 return [
