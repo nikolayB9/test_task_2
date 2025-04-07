@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::view('/', 'main.index')->name('main.index');
+    Route::view('/', 'main.index')->name('index');
 
     Route::put('/users/update-order', [\App\Http\Controllers\UserController::class, 'updateOrder']);
     Route::put('/users/{user}/toggle-activity', [\App\Http\Controllers\UserController::class, 'toggleActivity']);
