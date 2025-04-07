@@ -4,9 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreRequest;
 use App\Http\Requests\User\ToggleActivityRequest;
+use App\Http\Requests\User\UpdateOrderRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
-use http\Env\Request;
 
 class UserController extends Controller
 {
@@ -52,5 +52,28 @@ class UserController extends Controller
         $user->update([
            'is_active' => $request->input('is_active'),
         ]);
+    }
+
+    public function updateOrder(UpdateOrderRequest $request): void
+    {
+        foreach ($request->input('order') as $orderData) {
+            User::where('id', $orderData['id'])->update(['order' => $orderData['order']]);
+        }
+
+        /*
+         * Вариант обновления с одним запросом,
+         * но без использования QueryBuilder:
+         *
+         * $cases = '';
+         * $ids = [];
+         * foreach ($request->input('order') as $data) {
+         *     $cases .= "WHEN {$data['id']} THEN {$data['order']} ";
+         *     $ids[] = $data['id'];
+         * }
+         * $idsList = implode(', ', $ids);
+         * $sql = "UPDATE users SET order = CASE id $cases END WHERE id IN ($idsList)";
+         * DB::statement($sql);
+         *
+         */
     }
 }

@@ -16,6 +16,7 @@
     },
     "dependencies": {
         "bootstrap4-toggle": "^3.6.1",
+        "sortablejs": "^1.15.6",
         "test_task_2": "file:"
     }
 }
