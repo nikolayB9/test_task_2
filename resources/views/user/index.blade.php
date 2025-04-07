@@ -91,72 +91,9 @@
                             </table>
                         </div>
                     </div>
-
-                    {{--<div class="card">
-                        <div class="card-body">
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>
-                                        ID
-                                    </th>
-                                    <th>
-                                        Имя
-                                    </th>
-                                    <th>
-                                        Email
-                                    </th>
-                                    <th>
-                                        Роль
-                                    </th>
-                                    <th>
-                                        Дата создания
-                                    </th>
-                                    <th>
-                                        Дата изменения
-                                    </th>
-                                    <th>
-                                        Активность
-                                    </th>
-                                    <th>
-                                        Действия
-                                    </th>
-                                </tr>
-                                </thead>
-                                <tbody id="sortable-table">
-                                @foreach($users as $user)
-                                    <tr data-id="{{ $user->id }}">
-                                        <td>{{ $user->id }}</td>
-                                        <td>{{ $user->name }}</td>
-                                        <td>{{ $user->email }}</td>
-                                        <td>{{ \App\Enums\User\RoleEnum::getDescription($user->role) }}</td>
-                                        <td>{{ $user->created_at }}</td>
-                                        <td>{{ $user->updated_at }}</td>
-                                        <td>
-                                            <input type="checkbox"
-                                                   {{ $user->is_active ? 'checked' : '' }} data-toggle="toggle"
-                                                   data-size="xs" data-id="{{ $user->id }}">
-                                        </td>
-
-                                        <td>
-                                            <a href="{{ route('users.edit', $user->id) }}"
-                                               type="button"
-                                               class="btn btn-primary btn-sm mr-2 mb-1"
-                                               title="Редактировать">
-                                                <i class="fas fa-user-edit"></i>
-                                            </a>
-                                        </td>
-                                    </tr>
-                                @endforeach
-                                </tbody>
-                            </table>
-                        </div><!-- /.card-body -->
-                    </div>--}}
-                    <!-- /.card -->
                 </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
     <!-- /.content -->
 
