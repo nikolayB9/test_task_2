@@ -9,7 +9,6 @@
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12 mb-3">
-
                     <a href="{{ route('users.create') }}" class="btn btn-primary mb-3">Добавить пользователя</a>
 
                     @if (session('success'))
@@ -47,9 +46,9 @@
                                     </th>
                                 </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="sortable-table">
                                 @foreach($users as $user)
-                                    <tr>
+                                    <tr data-id="{{ $user->id }}">
                                         <td>{{ $user->id }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
