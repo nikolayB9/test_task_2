@@ -14,12 +14,12 @@
                     @if (session('success'))
                         <x-alert-success :message="session('success')"/>
                     @endif
-
                     <div class="card">
                         <div class="card-body">
-                            <table class="table">
+                            <table id="data-table" class="table table-bordered">
                                 <thead>
                                 <tr>
+                                    <th style="width: 30px;" class="no-sort"></th>
                                     <th>
                                         ID
                                     </th>
@@ -33,15 +33,15 @@
                                         Роль
                                     </th>
                                     <th>
-                                        Дата создания
+                                        Создан
                                     </th>
                                     <th>
-                                        Дата изменения
+                                        Изменен
                                     </th>
                                     <th>
                                         Активность
                                     </th>
-                                    <th>
+                                    <th class="no-sort">
                                         Действия
                                     </th>
                                 </tr>
@@ -49,18 +49,34 @@
                                 <tbody id="sortable-table">
                                 @foreach($users as $user)
                                     <tr data-id="{{ $user->id }}">
+                                        <td class="handle" style="cursor: grab;">
+                                            <i class="fas fa-bars"></i>
+                                        </td>
                                         <td>{{ $user->id }}</td>
                                         <td>{{ $user->name }}</td>
                                         <td>{{ $user->email }}</td>
-                                        <td>{{ \App\Enums\User\RoleEnum::getDescription($user->role) }}</td>
+                                        <td>
+                                            <span class="d-none">{{ $user->role }}</span>
+                                            @if($user->role === \App\Enums\User\RoleEnum::USER)
+                                                <button class="btn btn-primary"
+                                                        title="{{ \App\Enums\User\RoleEnum::getDescription($user->role) }}">
+                                                    <i class="fas fa-user"></i>
+                                                </button>
+                                            @elseif($user->role === \App\Enums\User\RoleEnum::ADMIN)
+                                                <button class="btn btn-danger"
+                                                        title="{{ \App\Enums\User\RoleEnum::getDescription($user->role) }}">
+                                                    <i class="fas fa-user-tie"></i>
+                                                </button>
+                                            @endif
+                                        </td>
                                         <td>{{ $user->created_at }}</td>
                                         <td>{{ $user->updated_at }}</td>
                                         <td>
+                                            <span class="d-none">{{ $user->is_active }}</span>
                                             <input type="checkbox"
                                                    {{ $user->is_active ? 'checked' : '' }} data-toggle="toggle"
                                                    data-size="xs" data-id="{{ $user->id }}">
                                         </td>
-
                                         <td>
                                             <a href="{{ route('users.edit', $user->id) }}"
                                                type="button"
@@ -73,13 +89,11 @@
                                 @endforeach
                                 </tbody>
                             </table>
-                        </div><!-- /.card-body -->
+                        </div>
                     </div>
-                    <!-- /.card -->
                 </div>
             </div>
-            <!-- /.row -->
-        </div><!-- /.container-fluid -->
+        </div>
     </section>
     <!-- /.content -->
 
