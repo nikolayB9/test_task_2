@@ -9,7 +9,7 @@
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Вход в панель администратора</p>
 
-                <form action="{{ route('login') }}" method="post"  id="quickForm">
+                <form action="{{ route('login.submit') }}" method="post"  id="quickForm">
                     @csrf
 
                     <x-input-with-icon type="email" name="email" placeholder="Эл.почта"
