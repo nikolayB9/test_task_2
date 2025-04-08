@@ -3,8 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\StoreRequest;
-use App\Http\Requests\User\ToggleActivityRequest;
-use App\Http\Requests\User\UpdateOrderRequest;
+use App\Http\Requests\ToggleActivityRequest;
+use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
 
