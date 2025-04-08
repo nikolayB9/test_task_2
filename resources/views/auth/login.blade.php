@@ -9,14 +9,14 @@
             <div class="card-body login-card-body">
                 <p class="login-box-msg">Вход в панель администратора</p>
 
-                <form action="{{ route('login.submit') }}" method="post"  id="quickForm">
+                <form action="{{ route('login.submit') }}" method="post" id="quickForm">
                     @csrf
 
                     <x-input-with-icon type="email" name="email" placeholder="Эл.почта"
-                                       icon="fas fa-envelope" :messages="$errors->get('email')" required />
+                                       icon="fas fa-envelope" :messages="$errors->get('email')" required/>
 
-                    <x-input-with-icon type="password" name="password" placeholder="Пароль"
-                                       icon="fas fa-lock" :messages="$errors->get('password')" required/>
+                    <x-input-password name="password" placeholder="Пароль"
+                                      :messages="$errors->get('password')" required/>
 
                     <div class="row">
                         <div class="col-8">
