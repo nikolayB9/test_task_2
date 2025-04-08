@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Requests\User;
+namespace App\Http\Requests\Category;
 
-use App\Enums\User\RoleEnum;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
-use Illuminate\Validation\Rule;
 
-class ToggleActivityRequest extends FormRequest
+class StoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +23,13 @@ class ToggleActivityRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'activity' => ['required', 'string', 'in:active,inactive'],
+            'title' => ['required', 'string', 'max:255', 'unique:categories,title'],
+            'is_active' => ['nullable', 'string', 'in:on'],
         ];
     }
 
-    protected function passedValidation(): void
+    protected function failedValidation(Validator $validator): void
     {
-        $this->replace([
-           'is_active' => $this->activity === 'active',
-        ]);
+        $validator->errors()->add('failedValidation', true);
     }
 }
