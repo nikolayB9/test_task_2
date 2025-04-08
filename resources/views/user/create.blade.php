@@ -36,17 +36,14 @@
                                     @endforeach
                                 </x-select>
 
-                                <x-input-with-icon type="password"
+                                <x-input-password type="password"
                                                    name="password"
                                                    placeholder="Пароль"
-                                                   icon="fas fa-lock"
                                                    :messages="$errors->get('password')"
                                                    required/>
 
-                                <x-input-with-icon type="password"
-                                                   name="password_confirmation"
+                                <x-input-password name="password_confirmation"
                                                    placeholder="Повторите пароль"
-                                                   icon="fas fa-lock"
                                                    :messages="$errors->get('password_confirmation')"
                                                    required/>
 
