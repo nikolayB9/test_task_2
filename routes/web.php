@@ -14,6 +14,11 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::put('/categories/{category}/toggle-activity', [\App\Http\Controllers\CategoryController::class, 'toggleActivity']);
     Route::resource('/categories', \App\Http\Controllers\CategoryController::class)
         ->except('show', 'destroy');
+
+    Route::put('/articles/update-order', [\App\Http\Controllers\ArticleController::class, 'updateOrder']);
+    Route::put('/articles/{article}/toggle-activity', [\App\Http\Controllers\ArticleController::class, 'toggleActivity']);
+    Route::resource('/articles', \App\Http\Controllers\ArticleController::class)
+        ->except('show', 'destroy');
 });
 
 Route::middleware('auth')->group(function () {
