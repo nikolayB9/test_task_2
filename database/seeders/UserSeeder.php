@@ -17,7 +17,6 @@ class UserSeeder extends Seeder
     {
         $this->createAdmin();
         $this->createUsers();
-
     }
 
     private function createAdmin(): void

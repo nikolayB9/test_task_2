@@ -3,7 +3,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(['auth', 'isAdmin'])->group(function () {
-    Route::view('/', 'main.index')->name('index');
+    Route::get('/', \App\Http\Controllers\MainController::class)->name('index');
 
     Route::put('/users/update-order', [\App\Http\Controllers\UserController::class, 'updateOrder']);
     Route::put('/users/{user}/toggle-activity', [\App\Http\Controllers\UserController::class, 'toggleActivity']);
@@ -13,6 +13,11 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::put('/categories/update-order', [\App\Http\Controllers\CategoryController::class, 'updateOrder']);
     Route::put('/categories/{category}/toggle-activity', [\App\Http\Controllers\CategoryController::class, 'toggleActivity']);
     Route::resource('/categories', \App\Http\Controllers\CategoryController::class)
+        ->except('show', 'destroy');
+
+    Route::put('/articles/update-order', [\App\Http\Controllers\ArticleController::class, 'updateOrder']);
+    Route::put('/articles/{article}/toggle-activity', [\App\Http\Controllers\ArticleController::class, 'toggleActivity']);
+    Route::resource('/articles', \App\Http\Controllers\ArticleController::class)
         ->except('show', 'destroy');
 });
 
