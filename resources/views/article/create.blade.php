@@ -12,7 +12,7 @@
                 <div class="col-6 mb-3">
                     <div class="card mb-3">
                         <div class="card-body">
-                            <form action="{{ route('articles.store') }}" method="post">
+                            <form action="{{ route('articles.store') }}" method="post" enctype="multipart/form-data">
                                 @csrf
 
                                 <x-input-with-label name="title"
@@ -36,9 +36,14 @@
                                           :messages="$errors->get('category_id')">
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}"
-                                        @selected((int)old('category_id') === $category->id)>{{ $category->title }}</option>
+                                                @selected((int)old('category_id') === $category->id)>{{ $category->title }}</option>
                                     @endforeach
                                 </x-select>
+
+                                <x-input-file name="image"
+                                              label="Превью"
+                                              help="Допустимый формат: PNG,JPEG,WEBP"
+                                              :messages="$errors->get('image')"/>
 
                                 <x-input-switch name="is_active"
                                                 label="Активность"

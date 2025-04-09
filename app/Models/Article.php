@@ -13,7 +13,12 @@ class Article extends Model
 
     public function category(): \Illuminate\Database\Eloquent\Relations\BelongsTo
     {
-        return $this->belongsTo(Category::class);
+        return $this->belongsTo(Category::class)->select('id', 'title');
+    }
+
+    public function getImageUrl(): string
+    {
+        return url('/storage/' . $this->image_path);
     }
 
     public function getCreatedAtAttribute($value): string

@@ -8,18 +8,23 @@ use App\Http\Requests\ToggleActivityRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Article;
 use App\Models\Category;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
 {
     public function index()
     {
-        return view('article.index', ['articles' => Article::orderBy('order')->get()]);
+        return view('article.index', [
+            'articles' => Article::orderBy('order')->with('category')->get()
+        ]);
     }
 
     public function create()
     {
-        return view('article.create', ['categories' => Category::orderBy('order')->get()]);
+        return view('article.create', [
+            'categories' => Category::select('id', 'title')->orderBy('order')->get(),
+        ]);
     }
 
     public function store(StoreRequest $request)
@@ -31,16 +36,20 @@ class ArticleController extends Controller
             'slug' => $data['slug'] ?? Str::slug($data['title']),
             'content' => $data['content'],
             'category_id' => $data['category_id'],
-            'preview_image' => 'test',
+            'image_path' => Storage::disk('public')->putFile('/images/articles', $data['image']),
             'order' => Article::max('order') + 1,
             'is_active' => !empty($data['is_active']),
         ]);
+
         return redirect()->route('articles.index')->with('success', 'Статья добавлена');
     }
 
     public function edit(Article $article)
     {
-        return view('article.edit', ['article' => $article, 'categories' => Category::orderBy('order')->get()]);
+        return view('article.edit', [
+            'article' => $article,
+            'categories' => Category::select('id', 'title')->orderBy('order')->get(),
+        ]);
     }
 
     public function update(UpdateRequest $request, Article $article)
@@ -48,6 +57,13 @@ class ArticleController extends Controller
         $data = $request->validated();
         $data['is_active'] = !empty($data['is_active']);
         $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
+
+        if (isset($data['image'])) {
+            $data['image_path'] = Storage::disk('public')->putFile('/images/articles', $data['image']);
+            Storage::disk('public')->delete($article->image_path);
+            unset($data['image']);
+        }
+
         $article->update($data);
         return redirect()->route('articles.edit', $article->id)->with('success', 'Статья обновлена');
     }
@@ -55,7 +71,7 @@ class ArticleController extends Controller
     public function toggleActivity(ToggleActivityRequest $request, Article $article): void
     {
         $article->update([
-           'is_active' => $request->input('is_active'),
+            'is_active' => $request->input('is_active'),
         ]);
     }
 

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('title');
             $table->string('slug');
             $table->foreignId('category_id')->index()->constrained('categories');
-            $table->string('preview_image');
+            $table->string('image_path');
             $table->text('content');
             $table->boolean('is_active')->default(true);
             $table->unsignedInteger('order');

@@ -22,7 +22,7 @@
                         </div>
                         <!-- /.card-header -->
                         <!-- form start -->
-                        <form action="{{ route('articles.update', $article->id) }}" method="post">
+                        <form action="{{ route('articles.update', $article->id) }}" method="post" enctype="multipart/form-data">
                             @csrf
                             @method('patch')
                             <div class="card-body">
@@ -70,6 +70,18 @@
                                                         @selected($category->id === (int)old('category_id', $article->category_id))>{{ $category->title }}</option>
                                                 @endforeach
                                             </x-select>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="text-bold">Превью</td>
+                                        <td>
+                                            <img src="{{ $article->getImageUrl() }}"
+                                                 alt="preview"
+                                                 style="width: 300px;"
+                                                 class="mb-3">
+                                            <x-input-file name="image"
+                                                          help="Допустимый формат: PNG,JPEG,WEBP"
+                                                          :messages="$errors->get('image')"/>
                                         </td>
                                     </tr>
                                     <tr>

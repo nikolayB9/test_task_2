@@ -30,6 +30,9 @@
                                     <th>
                                         Слаг
                                     </th>
+                                    <th class="no-sort">
+                                        Превью
+                                    </th>
                                     <th>
                                         Категория
                                     </th>
@@ -56,6 +59,9 @@
                                         <td>{{ $article->id }}</td>
                                         <td>{{ $article->title }}</td>
                                         <td>{{ $article->slug }}</td>
+                                        <td>
+                                            <img src="{{ $article->getImageUrl() }}" alt="preview" style="width: 100px;">
+                                        </td>
                                         <td>{{ $article->category->title }}</td>
                                         <td>{{ $article->created_at }}</td>
                                         <td>{{ $article->updated_at }}</td>

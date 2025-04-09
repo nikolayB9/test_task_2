@@ -33,6 +33,11 @@ class StoreRequest extends FormRequest
             ],
             'content' => ['required', 'string'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
+            'image' => [
+                'required',
+                'image',
+                'extensions:png,jpeg,webp',
+            ],
             'is_active' => ['nullable', 'string', 'in:on'],
         ];
     }
