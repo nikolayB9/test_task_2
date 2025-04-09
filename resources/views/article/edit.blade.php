@@ -56,6 +56,7 @@
                                         <td>
                                             <x-textarea name="content"
                                                         :text="old('content') ?? $article->content"
+                                                        rows="8"
                                                         required
                                                         :messages="$errors->get('content')"/>
                                         </td>
