@@ -8,8 +8,10 @@ use App\Models\Category;
 
 class CategoryController extends Controller
 {
-    public function index()
+    public function index(): \Illuminate\Http\Resources\Json\AnonymousResourceCollection
     {
-        return IndexCategoryResource::collection(Category::orderBy('order')->get());
+        return IndexCategoryResource::collection(
+            Category::orderBy('order')->get()
+        );
     }
 }
