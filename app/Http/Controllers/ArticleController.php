@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UpdateRequest;
+use App\Http\Requests\Article\UploadImageRequest;
 use App\Http\Requests\ToggleActivityRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Article;
@@ -36,7 +37,7 @@ class ArticleController extends Controller
             'slug' => $data['slug'] ?? Str::slug($data['title']),
             'content' => $data['content'],
             'category_id' => $data['category_id'],
-            'image_path' => Storage::disk('public')->putFile('/images/articles', $data['image']),
+            'image_path' => $data['image_path'],
             'order' => Article::max('order') + 1,
             'is_active' => !empty($data['is_active']),
         ]);
@@ -54,9 +55,9 @@ class ArticleController extends Controller
 
     public function update(UpdateRequest $request, Article $article)
     {
-        $data = $request->validated();
         $data['is_active'] = !empty($data['is_active']);
         $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
+        $data = $request->validated();
 
         if (isset($data['image'])) {
             $data['image_path'] = Storage::disk('public')->putFile('/images/articles', $data['image']);
@@ -80,5 +81,15 @@ class ArticleController extends Controller
         foreach ($request->input('order') as $orderData) {
             Article::where('id', $orderData['id'])->update(['order' => $orderData['order']]);
         }
+    }
+
+    public function uploadImage(UploadImageRequest $request)
+    {
+        $imagePath = $request->file('image')->store('/images/articles', 'public');
+        $url = '/storage/' . $imagePath;
+        return response()->json([
+            'image_path' => $imagePath,
+            'url' => $url,
+        ]);
     }
 }

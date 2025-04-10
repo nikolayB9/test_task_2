@@ -15,6 +15,8 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::resource('/categories', \App\Http\Controllers\CategoryController::class)
         ->except('show', 'destroy');
 
+    //TODO patch
+    Route::post('/articles/upload-image', [\App\Http\Controllers\ArticleController::class, 'uploadImage']);
     Route::put('/articles/update-order', [\App\Http\Controllers\ArticleController::class, 'updateOrder']);
     Route::put('/articles/{article}/toggle-activity', [\App\Http\Controllers\ArticleController::class, 'toggleActivity']);
     Route::resource('/articles', \App\Http\Controllers\ArticleController::class)
