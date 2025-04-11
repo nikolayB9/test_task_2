@@ -9,7 +9,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-6 mb-3">
+                <div class="col-md-10 mb-3">
                     <div class="card mb-3">
                         <div class="card-body">
                             <form action="{{ route('articles.store') }}" method="post" enctype="multipart/form-data">
@@ -30,9 +30,9 @@
                                     <x-input-error :messages="$errors->get('content')"/>
                                     <x-input-error :messages="$errors->get('image_path')"/>
                                 </div>
-                                <div id="summernote">{!! old('content') !!}</div>
-                                <input type="hidden" name="content" id="content">
-                                <input type="hidden" name="image_path" id="image_path">
+                                <div id="summernote"></div>
+                                <input type="hidden" name="content" id="content" value="{{ old('content', '') }}">
+                                <input type="hidden" name="image_path" id="image_path" value="{{ old('image_path', '') }}">
 
                                 <x-select name="category_id"
                                           label="Категория"
@@ -62,57 +62,10 @@
     <!-- /.content -->
 
     @push('scripts')
-        @push('scripts')
-            <script>
-                $(document).ready(function () {
-                    let imageUploaded = false;
-
-                    $('#summernote').summernote({
-                        height: 300,
-                        callbacks: {
-                            onChange: function(contents) {
-                                $('#content').val(contents);
-                            },
-                            onImageUpload: function(files) {
-                                if (!imageUploaded) {
-                                    // Разрешаем загрузить только одно изображение
-                                    uploadImage(files[0]);
-                                } else {
-                                    toastr.warning('Можно загрузить только одно изображение.');
-                                }
-                            },
-                            onMediaDelete: function($target) {
-                                // Если изображение удалено, сбрасываем флаг
-                                imageUploaded = false;
-                                toastr.info('Изображение удалено. Можно загрузить новое.');
-                            }
-                        }
-                    });
-
-                    function uploadImage(file) {
-                        let data = new FormData();
-                        data.append("image", file);
-
-                        axios.post('/articles/upload-image', data)
-                            .then(response => {
-                                console.log(response.data)
-                                const image_path = response.data.image_path;
-                                const url = response.data.url;
-                                $('#summernote').summernote('insertImage', url);
-                                $('#image_path').val(image_path);
-                                toastr.success('Изображение успешно загружено!');
-                                imageUploaded = true; // Устанавливаем флаг
-                            })
-                            .catch(error => {
-                                console.error(error);
-                                const message = error.response?.data?.message || "Неизвестная ошибка загрузки изображения.";
-                                toastr.error(message, 'Ошибка загрузки изображения');
-                            });
-                    }
-                });
-            </script>
-        @endpush
-
-
+        <script>
+            window.pageConfig = {
+                uploadImageType: 'articles',
+            };
+        </script>
     @endpush
 </x-app-layout>

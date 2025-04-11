@@ -39,10 +39,10 @@ class UpdateRequest extends FormRequest
             ],
             'content' => ['required', 'string'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
-            'image' => [
-                'nullable',
-                'image',
-                'extensions:png,jpeg,webp',
+            'image_path' => [
+                'required',
+                'string',
+                Rule::unique('articles', 'image_path')->ignore($this->article)
             ],
             'is_active' => ['nullable', 'string', 'in:on'],
         ];

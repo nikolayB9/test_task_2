@@ -2,6 +2,7 @@ import './bootstrap.js'
 
 import setupSortable from "@/modules/sortable.js";
 import setupCheckboxes from "@/modules/checkboxes.js";
+import setupSummernote from "@/modules/summernote.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     const config = window.pageConfig;
@@ -32,6 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
         // так как после перерисовки DataTables оформление может слетать
         $('input[data-toggle="toggle"]').bootstrapToggle();
     };
+
+    // Инициализация Summernote
+    if (config?.uploadImageType) {
+        setupSummernote({type: config.uploadImageType});
+    }
 
     // Вызываем initUI при первоначальной загрузке страницы
     initUI();

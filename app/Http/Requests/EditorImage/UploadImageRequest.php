@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Article;
+namespace App\Http\Requests\EditorImage;
 
+use App\Enums\EditorImage\TypeEnum;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Validation\Rule;
 
 class UploadImageRequest extends FormRequest
 {
@@ -29,6 +31,7 @@ class UploadImageRequest extends FormRequest
                 'extensions:png,jpeg,webp',
                 'max:2048',
             ],
+            'type' => ['required', 'string', Rule::enum(TypeEnum::class)],
         ];
     }
 }

@@ -16,11 +16,13 @@ Route::middleware(['auth', 'isAdmin'])->group(function () {
         ->except('show', 'destroy');
 
     //TODO patch
-    Route::post('/articles/upload-image', [\App\Http\Controllers\ArticleController::class, 'uploadImage']);
     Route::put('/articles/update-order', [\App\Http\Controllers\ArticleController::class, 'updateOrder']);
     Route::put('/articles/{article}/toggle-activity', [\App\Http\Controllers\ArticleController::class, 'toggleActivity']);
     Route::resource('/articles', \App\Http\Controllers\ArticleController::class)
         ->except('show', 'destroy');
+
+    Route::post('/editor/images', [\App\Http\Controllers\EditorImageController::class, 'store']);
+    Route::delete('/editor/images', [\App\Http\Controllers\EditorImageController::class, 'destroy']);
 });
 
 Route::middleware('auth')->group(function () {

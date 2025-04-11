@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UpdateRequest;
-use App\Http\Requests\Article\UploadImageRequest;
+use App\Http\Requests\EditorImage\UploadImageRequest;
 use App\Http\Requests\ToggleActivityRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Article;
@@ -55,6 +55,8 @@ class ArticleController extends Controller
 
     public function update(UpdateRequest $request, Article $article)
     {
+        $data = $request->validated();
+        dd($data);
         $data['is_active'] = !empty($data['is_active']);
         $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
         $data = $request->validated();
@@ -81,15 +83,5 @@ class ArticleController extends Controller
         foreach ($request->input('order') as $orderData) {
             Article::where('id', $orderData['id'])->update(['order' => $orderData['order']]);
         }
-    }
-
-    public function uploadImage(UploadImageRequest $request)
-    {
-        $imagePath = $request->file('image')->store('/images/articles', 'public');
-        $url = '/storage/' . $imagePath;
-        return response()->json([
-            'image_path' => $imagePath,
-            'url' => $url,
-        ]);
     }
 }

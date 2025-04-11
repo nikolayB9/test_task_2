@@ -1,12 +1,11 @@
 <?php
 
-namespace App\Http\Requests\Article;
+namespace App\Http\Requests\EditorImage;
 
-use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
 
-class StoreRequest extends FormRequest
+class DeleteImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,32 +23,21 @@ class StoreRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => ['required', 'string', 'max:255', 'unique:articles,title'],
-            'slug' => [
-                'nullable',
-                'string',
-                'max:255',
-                'unique:articles,slug',
-                'regex:/^[a-z\d-]+[a-z\d]+$/',
-            ],
-            'content' => ['required', 'string'],
-            'category_id' => ['required', 'integer', 'exists:categories,id'],
             'image_path' => [
                 'required',
                 'string',
                 function ($attribute, $value, $fail) {
                     // Проверка, существует ли файл в диске "public"
                     if (!Storage::disk('public')->exists($value)) {
-                        $fail('Изображение не найдено или уже удалено.');
+                        $fail('Файл не найден или уже удалён.');
+                    }
+
+                    // Защита: запрещаем выход за пределы допустимых папок
+                    if (!str_starts_with($value, 'images/')) {
+                        $fail('Недопустимый путь к файлу.');
                     }
                 },
             ],
-            'is_active' => ['nullable', 'string', 'in:on'],
         ];
-    }
-
-    protected function failedValidation(Validator $validator): void
-    {
-        $validator->errors()->add('failedValidation', true);
     }
 }
