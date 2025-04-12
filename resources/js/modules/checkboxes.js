@@ -5,7 +5,7 @@ export default function setupCheckboxes({ resource }) {
         const isChecked = $(this).prop('checked');
         const id = $(this).data('id');
 
-        axios.put(`/${resource}/${id}/toggle-activity`, {
+        axios.patch(`/${resource}/${id}/toggle-activity`, {
             activity: isChecked ? 'active' : 'inactive'
         })
     });

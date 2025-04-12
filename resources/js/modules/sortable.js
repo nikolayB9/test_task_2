@@ -14,7 +14,7 @@ export default function setupSortable({ url }) {
                     };
                 });
 
-                axios.put(url, {
+                axios.patch(url, {
                     order: newOrder
                 });
             }

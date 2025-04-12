@@ -5,19 +5,18 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(['auth', 'isAdmin'])->group(function () {
     Route::get('/', \App\Http\Controllers\MainController::class)->name('index');
 
-    Route::put('/users/update-order', [\App\Http\Controllers\UserController::class, 'updateOrder']);
-    Route::put('/users/{user}/toggle-activity', [\App\Http\Controllers\UserController::class, 'toggleActivity']);
+    Route::patch('/users/update-order', [\App\Http\Controllers\UserController::class, 'updateOrder']);
+    Route::patch('/users/{user}/toggle-activity', [\App\Http\Controllers\UserController::class, 'toggleActivity']);
     Route::resource('/users', \App\Http\Controllers\UserController::class)
         ->except('show', 'destroy');
 
-    Route::put('/categories/update-order', [\App\Http\Controllers\CategoryController::class, 'updateOrder']);
-    Route::put('/categories/{category}/toggle-activity', [\App\Http\Controllers\CategoryController::class, 'toggleActivity']);
+    Route::patch('/categories/update-order', [\App\Http\Controllers\CategoryController::class, 'updateOrder']);
+    Route::patch('/categories/{category}/toggle-activity', [\App\Http\Controllers\CategoryController::class, 'toggleActivity']);
     Route::resource('/categories', \App\Http\Controllers\CategoryController::class)
         ->except('show', 'destroy');
 
-    //TODO patch
-    Route::put('/articles/update-order', [\App\Http\Controllers\ArticleController::class, 'updateOrder']);
-    Route::put('/articles/{article}/toggle-activity', [\App\Http\Controllers\ArticleController::class, 'toggleActivity']);
+    Route::patch('/articles/update-order', [\App\Http\Controllers\ArticleController::class, 'updateOrder']);
+    Route::patch('/articles/{article}/toggle-activity', [\App\Http\Controllers\ArticleController::class, 'toggleActivity']);
     Route::resource('/articles', \App\Http\Controllers\ArticleController::class)
         ->except('show', 'destroy');
 
