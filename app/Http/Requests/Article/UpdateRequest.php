@@ -4,6 +4,7 @@ namespace App\Http\Requests\Article;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
@@ -42,7 +43,13 @@ class UpdateRequest extends FormRequest
             'image_path' => [
                 'required',
                 'string',
-                Rule::unique('articles', 'image_path')->ignore($this->article)
+                Rule::unique('articles', 'image_path')->ignore($this->article),
+                function ($attribute, $value, $fail) {
+                    // Проверка, существует ли файл в диске "public"
+                    if (!Storage::disk('public')->exists($value)) {
+                        $fail('Изображение не найдено или уже удалено.');
+                    }
+                },
             ],
             'is_active' => ['nullable', 'string', 'in:on'],
         ];

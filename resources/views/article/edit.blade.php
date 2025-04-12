@@ -103,7 +103,7 @@
     @push('scripts')
         <script>
             window.pageConfig = {
-                uploadImageUrl: '/articles/upload-image',
+                uploadImageType: 'articles',
             };
         </script>
     @endpush

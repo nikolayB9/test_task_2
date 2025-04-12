@@ -4,12 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UpdateRequest;
-use App\Http\Requests\EditorImage\UploadImageRequest;
 use App\Http\Requests\ToggleActivityRequest;
 use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Article;
 use App\Models\Category;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ArticleController extends Controller
@@ -56,16 +54,8 @@ class ArticleController extends Controller
     public function update(UpdateRequest $request, Article $article)
     {
         $data = $request->validated();
-        dd($data);
         $data['is_active'] = !empty($data['is_active']);
         $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
-        $data = $request->validated();
-
-        if (isset($data['image'])) {
-            $data['image_path'] = Storage::disk('public')->putFile('/images/articles', $data['image']);
-            Storage::disk('public')->delete($article->image_path);
-            unset($data['image']);
-        }
 
         $article->update($data);
         return redirect()->route('articles.edit', $article->id)->with('success', 'Статья обновлена');

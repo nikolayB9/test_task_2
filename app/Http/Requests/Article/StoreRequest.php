@@ -37,6 +37,7 @@ class StoreRequest extends FormRequest
             'image_path' => [
                 'required',
                 'string',
+                'unique:articles,image_path',
                 function ($attribute, $value, $fail) {
                     // Проверка, существует ли файл в диске "public"
                     if (!Storage::disk('public')->exists($value)) {
