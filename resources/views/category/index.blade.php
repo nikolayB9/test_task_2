@@ -62,7 +62,7 @@
                                                type="button"
                                                class="btn btn-primary btn-sm mr-2 mb-1"
                                                title="Редактировать">
-                                                <i class="fas fa-user-edit"></i>
+                                                <i class="far fa-edit"></i>
                                             </a>
                                         </td>
                                     </tr>
