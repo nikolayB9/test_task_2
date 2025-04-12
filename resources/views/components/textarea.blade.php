@@ -6,7 +6,7 @@
     @endif
     <textarea name="{{ $name }}"
               id="{{ $id ?? $name }}"
-              class="form-control"
+              class="form-control @empty(!$messages) is-invalid @endempty"
               rows="{{ $rows }}"
               placeholder="{{ $placeholder }}"
     {{ $attributes }}>{{ $text }}</textarea>

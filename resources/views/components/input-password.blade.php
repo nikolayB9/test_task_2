@@ -15,15 +15,15 @@
         <input type="password"
                name="{{ $name }}"
                id="{{ $id ?? $name }}"
-               class="form-control"
+               class="form-control @empty(!$messages) is-invalid @endempty"
                placeholder="{{ $placeholder }}">
         <div class="input-group-append">
         <span class="input-group-text toggle-password" style="cursor: pointer;" data-target="#{{ $id ?? $name }}">
             <i class="fa fa-eye"></i>
         </span>
         </div>
-        <x-input-error :messages="$messages"/>
     </div>
+    <x-input-error :messages="$messages"/>
 </div>
 
 @pushonce('scripts')

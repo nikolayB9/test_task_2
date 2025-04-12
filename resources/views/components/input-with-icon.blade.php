@@ -3,7 +3,7 @@
 <div class="form-group">
     <div class="input-group">
         <input type="{{ $type }}"
-               class="form-control {{ !empty($messages) ? 'is-invalid' : '' }}"
+               class="form-control @empty(!$messages) is-invalid @endempty"
                name="{{ $name }}"
                value="{{ $value }}"
                placeholder="{{ $placeholder }}"
