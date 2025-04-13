@@ -39,6 +39,15 @@ class UpdateRequest extends FormRequest
         ];
     }
 
+    public function prepareDataForUpdate(): array
+    {
+        $data = $this->validated();
+
+        $data['is_active'] = !empty($data['is_active']);
+
+        return $data;
+    }
+
     protected function failedValidation(Validator $validator): void
     {
         $validator->errors()->add('failedValidation', true);

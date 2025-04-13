@@ -41,7 +41,6 @@ class CategoryController extends Controller
         return redirect()->route('categories.edit', $category->id)->with('success', 'Категория обновлена');
     }
 
-
     /**
      * @return class-string<\Illuminate\Database\Eloquent\Model>
      */

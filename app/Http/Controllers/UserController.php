@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\HasSortableOrder;
+use App\Http\Controllers\Traits\HasToggleActivity;
 use App\Http\Requests\User\StoreRequest;
-use App\Http\Requests\ToggleActivityRequest;
-use App\Http\Requests\UpdateOrderRequest;
 use App\Http\Requests\User\UpdateRequest;
 use App\Models\User;
 
 class UserController extends Controller
 {
+    use HasToggleActivity, HasSortableOrder;
+
     public function index()
     {
         return view('user.index', ['users' => User::orderBy('order')->get()]);
@@ -22,15 +24,8 @@ class UserController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $data = $request->validated();
-        User::create([
-            'name' => $data['name'],
-            'email' => $data['email'],
-            'role' => $data['role'],
-            'password' => $data['password'],
-            'order' => User::max('order') + 1,
-            'is_active' => !empty($data['is_active']),
-        ]);
+        User::create($request->prepareDataForCreation());
+
         return redirect()->route('users.index')->with('success', 'Пользователь добавлен');
     }
 
@@ -41,39 +36,24 @@ class UserController extends Controller
 
     public function update(UpdateRequest $request, User $user)
     {
-        $data = $request->validated();
-        $data['is_active'] = !empty($data['is_active']);
-        $user->update($data);
+        $user->update($request->prepareDataForUpdate());
+
         return redirect()->route('users.edit', $user->id)->with('success', 'Пользователь обновлен');
     }
 
-    public function toggleActivity(ToggleActivityRequest $request, User $user): void
+    /**
+     * @return class-string<\Illuminate\Database\Eloquent\Model>
+     */
+    protected function getModelClass(): string
     {
-        $user->update([
-           'is_active' => $request->input('is_active'),
-        ]);
+        return User::class;
     }
 
-    public function updateOrder(UpdateOrderRequest $request): void
+    /**
+     * @return string
+     */
+    protected function getRouteKey(): string
     {
-        foreach ($request->input('order') as $orderData) {
-            User::where('id', $orderData['id'])->update(['order' => $orderData['order']]);
-        }
-
-        /*
-         * Вариант обновления с одним запросом,
-         * но без использования QueryBuilder:
-         *
-         * $cases = '';
-         * $ids = [];
-         * foreach ($request->input('order') as $data) {
-         *     $cases .= "WHEN {$data['id']} THEN {$data['order']} ";
-         *     $ids[] = $data['id'];
-         * }
-         * $idsList = implode(', ', $ids);
-         * $sql = "UPDATE users SET order = CASE id $cases END WHERE id IN ($idsList)";
-         * DB::statement($sql);
-         *
-         */
+        return 'user';
     }
 }

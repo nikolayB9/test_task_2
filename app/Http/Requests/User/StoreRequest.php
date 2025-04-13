@@ -34,6 +34,16 @@ class StoreRequest extends FormRequest
         ];
     }
 
+    public function prepareDataForCreation(): array
+    {
+        $data = $this->validated();
+
+        $data['is_active'] = !empty($data['is_active']);
+        $data['order'] = (\App\Models\User::max('order') ?? 0) + 1;
+
+        return $data;
+    }
+
     protected function failedValidation(Validator $validator): void
     {
         $validator->errors()->add('failedValidation', true);
