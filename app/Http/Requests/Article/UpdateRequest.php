@@ -5,6 +5,7 @@ namespace App\Http\Requests\Article;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
@@ -58,5 +59,15 @@ class UpdateRequest extends FormRequest
     protected function failedValidation(Validator $validator): void
     {
         $validator->errors()->add('failedValidation', true);
+    }
+
+    public function prepareDataForUpdate(): array
+    {
+        $data = $this->validated();
+
+        $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
+        $data['is_active'] = !empty($data['is_active']);
+
+        return $data;
     }
 }

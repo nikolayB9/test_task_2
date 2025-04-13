@@ -5,6 +5,7 @@ namespace App\Http\Requests\Article;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class StoreRequest extends FormRequest
 {
@@ -52,5 +53,16 @@ class StoreRequest extends FormRequest
     protected function failedValidation(Validator $validator): void
     {
         $validator->errors()->add('failedValidation', true);
+    }
+
+    public function prepareDataForCreation(): array
+    {
+        $data = $this->validated();
+
+        $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
+        $data['is_active'] = !empty($data['is_active']);
+        $data['order'] = (\App\Models\Article::max('order') ?? 0) + 1;
+
+        return $data;
     }
 }

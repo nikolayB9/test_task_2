@@ -24,8 +24,8 @@ class UpdateOrderRequest extends FormRequest
         return [
             'order' => ['required', 'array'],
             'order.*' => ['array:id,order'],
-            'order.*.id' => ['integer', 'exists:users,id'],
-            'order.*.order' => ['integer', 'exists:users,order'],
+            'order.*.id' => ['required', 'integer', 'min:1', 'distinct'],
+            'order.*.order' => ['required', 'integer', 'min:1', 'distinct'],
         ];
     }
 }

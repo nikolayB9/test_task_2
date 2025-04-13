@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\HasSortableOrder;
+use App\Http\Controllers\Traits\HasToggleActivity;
 use App\Http\Requests\Article\StoreRequest;
 use App\Http\Requests\Article\UpdateRequest;
-use App\Http\Requests\ToggleActivityRequest;
-use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Article;
 use App\Models\Category;
-use Illuminate\Support\Str;
+use Illuminate\Database\Eloquent\Collection;
 
 class ArticleController extends Controller
 {
+    use HasToggleActivity, HasSortableOrder;
+
     public function index()
     {
         return view('article.index', [
@@ -22,23 +24,13 @@ class ArticleController extends Controller
     public function create()
     {
         return view('article.create', [
-            'categories' => Category::select('id', 'title')->orderBy('order')->get(),
+            'categories' => $this->getCategories(),
         ]);
     }
 
     public function store(StoreRequest $request)
     {
-        $data = $request->validated();
-
-        Article::create([
-            'title' => $data['title'],
-            'slug' => $data['slug'] ?? Str::slug($data['title']),
-            'content' => $data['content'],
-            'category_id' => $data['category_id'],
-            'image_path' => $data['image_path'],
-            'order' => Article::max('order') + 1,
-            'is_active' => !empty($data['is_active']),
-        ]);
+        Article::create($request->prepareDataForCreation());
 
         return redirect()->route('articles.index')->with('success', 'Статья добавлена');
     }
@@ -47,31 +39,35 @@ class ArticleController extends Controller
     {
         return view('article.edit', [
             'article' => $article,
-            'categories' => Category::select('id', 'title')->orderBy('order')->get(),
+            'categories' => $this->getCategories(),
         ]);
     }
 
     public function update(UpdateRequest $request, Article $article)
     {
-        $data = $request->validated();
-        $data['is_active'] = !empty($data['is_active']);
-        $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
+        $article->update($request->prepareDataForUpdate());
 
-        $article->update($data);
         return redirect()->route('articles.edit', $article->id)->with('success', 'Статья обновлена');
     }
 
-    public function toggleActivity(ToggleActivityRequest $request, Article $article): void
+    /**
+     * @return class-string<\Illuminate\Database\Eloquent\Model>
+     */
+    protected function getModelClass(): string
     {
-        $article->update([
-            'is_active' => $request->input('is_active'),
-        ]);
+        return Article::class;
     }
 
-    public function updateOrder(UpdateOrderRequest $request): void
+    /**
+     * @return string
+     */
+    protected function getRouteKey(): string
     {
-        foreach ($request->input('order') as $orderData) {
-            Article::where('id', $orderData['id'])->update(['order' => $orderData['order']]);
-        }
+        return 'article';
+    }
+
+    protected function getCategories(): Collection
+    {
+        return Category::select('id', 'title')->orderBy('order')->get();
     }
 }
