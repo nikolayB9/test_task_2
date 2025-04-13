@@ -23,15 +23,18 @@ class UploadImageRequest extends FormRequest
      */
     public function rules(): array
     {
+        $extensions = config('images.allowed_extensions');
+        $maxSize = config('images.max_upload_size');
+
         return [
             'image' => [
                 'required',
                 'image',
-                'mimes:png,jpeg,webp',
-                'extensions:png,jpeg,webp',
-                'max:2048',
+                'mimes:' . implode(',', $extensions),
+                'extensions:' . implode(',', $extensions),
+                'max:' . $maxSize,
             ],
-            'type' => ['required', 'string', Rule::enum(TypeEnum::class)],
+            'type' => ['required', 'string', Rule::in(array_keys(config('images.paths')))],
         ];
     }
 }
