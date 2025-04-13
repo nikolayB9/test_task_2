@@ -60,7 +60,7 @@
                                         <td>{{ $article->title }}</td>
                                         <td>{{ $article->slug }}</td>
                                         <td>
-                                            <img src="{{ $article->getImageUrl() }}" alt="preview" style="width: 100px;">
+                                            <img src="{{ $article->image_url }}" alt="preview" style="width: 100px;">
                                         </td>
                                         <td>{{ $article->category->title }}</td>
                                         <td>{{ $article->created_at }}</td>

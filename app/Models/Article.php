@@ -16,7 +16,7 @@ class Article extends Model
         return $this->belongsTo(Category::class)->select('id', 'title');
     }
 
-    public function getImageUrl(): string
+    public function getImageUrlAttribute(): string
     {
         return url('/storage/' . $this->image_path);
     }
