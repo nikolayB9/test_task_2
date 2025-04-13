@@ -5,24 +5,16 @@ namespace Database\Seeders;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 class CategorySeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+    private int $categoryCount = 20;
+
     public function run(): void
     {
-        $numberOfCategories = rand(10, 30);
-        $i = 1;
-
-        while ($i <= $numberOfCategories) {
+        for ($i = 1; $i <= $this->categoryCount; $i++) {
             Category::factory()->create([
                 'order' => $i,
             ]);
-            $i++;
         }
-
     }
 }

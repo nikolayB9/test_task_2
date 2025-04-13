@@ -11,7 +11,9 @@ class EditorImageController extends Controller
     public function store(UploadImageRequest $request)
     {
         $type = $request->input('type');
-        $imagePath = $request->file('image')->store("/images/$type", 'public');
+        $pathToSave = config('images.paths.' . $type);
+
+        $imagePath = $request->file('image')->store($pathToSave, 'public');
         $url = '/storage/' . $imagePath;
 
         return response()->json([

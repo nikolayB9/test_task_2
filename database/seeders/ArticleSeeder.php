@@ -6,25 +6,24 @@ use App\Models\Article;
 use App\Models\Category;
 use Illuminate\Database\Seeder;
 
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
-
 class ArticleSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+    private int $articleCount = 100;
+
     public function run(): void
     {
-        $categoriesIds = Category::pluck('id')->toArray();
-        $numberOfArticles = rand(100, 300);
-        $i = 1;
+        $categoryIds = Category::pluck('id')->toArray();
 
-        while ($i <= $numberOfArticles) {
+        if (empty($categoryIds)) {
+            $this->command->warn('No categories found. Skipping article seeding.');
+            return;
+        }
+
+        for ($i = 1; $i <= $this->articleCount; $i++) {
             Article::factory()->create([
-                'category_id' => fake()->randomElement($categoriesIds),
+                'category_id' => fake()->randomElement($categoryIds),
                 'order' => $i,
             ]);
-            $i++;
         }
     }
 }

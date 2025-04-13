@@ -20,7 +20,7 @@ class ArticleResource extends JsonResource
             'title' => $this->title,
             'slug' => $this->slug,
             'content' => $this->content,
-            'image_url' => $this->getImageUrl(),
+            'image_url' => $this->image_url,
             'category' => MinifiedCategoryResource::make($this->category),
             'is_active' => $this->is_active,
             'order' => $this->order,
