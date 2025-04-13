@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Traits\HasSortableOrder;
+use App\Http\Controllers\Traits\HasToggleActivity;
 use App\Http\Requests\Category\StoreRequest;
 use App\Http\Requests\Category\UpdateRequest;
-use App\Http\Requests\ToggleActivityRequest;
-use App\Http\Requests\UpdateOrderRequest;
 use App\Models\Category;
 
 class CategoryController extends Controller
 {
+    use HasToggleActivity, HasSortableOrder;
+
     public function index()
     {
         return view('category.index', ['categories' => Category::orderBy('order')->get()]);
@@ -22,13 +24,8 @@ class CategoryController extends Controller
 
     public function store(StoreRequest $request)
     {
-        $data = $request->validated();
+        Category::create($request->prepareDataForCreation());
 
-        Category::create([
-            'title' => $data['title'],
-            'order' => Category::max('order') + 1,
-            'is_active' => !empty($data['is_active']),
-        ]);
         return redirect()->route('categories.index')->with('success', 'Категория добавлена');
     }
 
@@ -39,23 +36,25 @@ class CategoryController extends Controller
 
     public function update(UpdateRequest $request, Category $category)
     {
-        $data = $request->validated();
-        $data['is_active'] = !empty($data['is_active']);
-        $category->update($data);
+        $category->update($request->prepareDataForUpdate());
+
         return redirect()->route('categories.edit', $category->id)->with('success', 'Категория обновлена');
     }
 
-    public function toggleActivity(ToggleActivityRequest $request, Category $category): void
+
+    /**
+     * @return class-string<\Illuminate\Database\Eloquent\Model>
+     */
+    protected function getModelClass(): string
     {
-        $category->update([
-           'is_active' => $request->input('is_active'),
-        ]);
+        return Category::class;
     }
 
-    public function updateOrder(UpdateOrderRequest $request): void
+    /**
+     * @return string
+     */
+    protected function getRouteKey(): string
     {
-        foreach ($request->input('order') as $orderData) {
-            Category::where('id', $orderData['id'])->update(['order' => $orderData['order']]);
-        }
+        return 'category';
     }
 }

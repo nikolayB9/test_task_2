@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Category;
 
-use App\Enums\User\RoleEnum;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
@@ -33,6 +32,15 @@ class UpdateRequest extends FormRequest
             ],
             'is_active' => ['nullable', 'string', 'in:on'],
         ];
+    }
+
+    public function prepareDataForUpdate(): array
+    {
+        $data = $this->validated();
+
+        $data['is_active'] = !empty($data['is_active']);
+
+        return $data;
     }
 
     protected function failedValidation(Validator $validator): void

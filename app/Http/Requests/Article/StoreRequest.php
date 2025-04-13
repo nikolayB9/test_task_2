@@ -50,11 +50,6 @@ class StoreRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator): void
-    {
-        $validator->errors()->add('failedValidation', true);
-    }
-
     public function prepareDataForCreation(): array
     {
         $data = $this->validated();
@@ -64,5 +59,10 @@ class StoreRequest extends FormRequest
         $data['order'] = (\App\Models\Article::max('order') ?? 0) + 1;
 
         return $data;
+    }
+
+    protected function failedValidation(Validator $validator): void
+    {
+        $validator->errors()->add('failedValidation', true);
     }
 }

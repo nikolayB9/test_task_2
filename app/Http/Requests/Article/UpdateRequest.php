@@ -56,11 +56,6 @@ class UpdateRequest extends FormRequest
         ];
     }
 
-    protected function failedValidation(Validator $validator): void
-    {
-        $validator->errors()->add('failedValidation', true);
-    }
-
     public function prepareDataForUpdate(): array
     {
         $data = $this->validated();
@@ -69,5 +64,10 @@ class UpdateRequest extends FormRequest
         $data['is_active'] = !empty($data['is_active']);
 
         return $data;
+    }
+
+    protected function failedValidation(Validator $validator): void
+    {
+        $validator->errors()->add('failedValidation', true);
     }
 }
