@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
 
     private function createUsers(): void
     {
-        $numberOfUsers = rand(100, 300);
+        $numberOfUsers = rand(10, 30);
         $i = 2;
 
         while ($i <= $numberOfUsers) {

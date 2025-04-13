@@ -8,6 +8,6 @@ Route::prefix('v1')->group(function () {
     Route::controller(\App\Http\Controllers\Api\V1\ArticleController::class)->group(function () {
         Route::get('/articles/category/{category}', 'getArticlesByCategory');
         Route::get('/articles/{slug}', 'getArticleBySlug');
-        Route::get('/articles/', 'index');
+        Route::get('/articles', 'index');
     });
 });

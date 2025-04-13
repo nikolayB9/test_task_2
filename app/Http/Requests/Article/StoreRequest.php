@@ -4,6 +4,8 @@ namespace App\Http\Requests\Article;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 
 class StoreRequest extends FormRequest
 {
@@ -33,13 +35,30 @@ class StoreRequest extends FormRequest
             ],
             'content' => ['required', 'string'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
-            'image' => [
+            'image_path' => [
                 'required',
-                'image',
-                'extensions:png,jpeg,webp',
+                'string',
+                'unique:articles,image_path',
+                function ($attribute, $value, $fail) {
+                    // Проверка, существует ли файл в диске "public"
+                    if (!Storage::disk('public')->exists($value)) {
+                        $fail('Изображение не найдено или уже удалено.');
+                    }
+                },
             ],
             'is_active' => ['nullable', 'string', 'in:on'],
         ];
+    }
+
+    public function prepareDataForCreation(): array
+    {
+        $data = $this->validated();
+
+        $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
+        $data['is_active'] = !empty($data['is_active']);
+        $data['order'] = (\App\Models\Article::max('order') ?? 0) + 1;
+
+        return $data;
     }
 
     protected function failedValidation(Validator $validator): void

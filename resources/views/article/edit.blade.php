@@ -9,7 +9,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-10">
 
                     @if (session('success'))
                         <x-alert-success :message="session('success')"/>
@@ -54,11 +54,13 @@
                                     <tr>
                                         <td class="text-bold">Контент</td>
                                         <td>
-                                            <x-textarea name="content"
-                                                        :text="old('content') ?? $article->content"
-                                                        rows="8"
-                                                        required
-                                                        :messages="$errors->get('content')"/>
+                                            <div class="mt-0 mb-1">
+                                                <x-input-error :messages="$errors->get('content')"/>
+                                                <x-input-error :messages="$errors->get('image_path')"/>
+                                            </div>
+                                            <div id="summernote"></div>
+                                            <input type="hidden" name="content" id="content" value="{{ old('content', $article->content) }}">
+                                            <input type="hidden" name="image_path" id="image_path" value="{{ old('image_path', $article->image_path) }}">
                                         </td>
                                     </tr>
                                     <tr>
@@ -71,18 +73,6 @@
                                                         @selected($category->id === (int)old('category_id', $article->category_id))>{{ $category->title }}</option>
                                                 @endforeach
                                             </x-select>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-bold">Превью</td>
-                                        <td>
-                                            <img src="{{ $article->getImageUrl() }}"
-                                                 alt="preview"
-                                                 style="width: 300px;"
-                                                 class="mb-3">
-                                            <x-input-file name="image"
-                                                          help="Допустимый формат: PNG,JPEG,WEBP"
-                                                          :messages="$errors->get('image')"/>
                                         </td>
                                     </tr>
                                     <tr>
@@ -109,4 +99,12 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    @push('scripts')
+        <script>
+            window.pageConfig = {
+                uploadImageType: 'articles',
+            };
+        </script>
+    @endpush
 </x-app-layout>

@@ -9,7 +9,7 @@
     <section class="content">
         <div class="container-fluid">
             <div class="row">
-                <div class="col-6 mb-3">
+                <div class="col-md-10 mb-3">
                     <div class="card mb-3">
                         <div class="card-body">
                             <form action="{{ route('articles.store') }}" method="post" enctype="multipart/form-data">
@@ -25,25 +25,23 @@
                                                     placeholder="Генерируется автоматически если оставить пустым"
                                                     :messages="$errors->get('slug')"/>
 
-                                <x-textarea name="content"
-                                            label="Контент"
-                                            :text="old('content')"
-                                            required
-                                            :messages="$errors->get('content')"/>
+                                <label for="summernote" class="mb-0">Контент</label>
+                                <div class="mt-0 mb-1">
+                                    <x-input-error :messages="$errors->get('content')"/>
+                                    <x-input-error :messages="$errors->get('image_path')"/>
+                                </div>
+                                <div id="summernote"></div>
+                                <input type="hidden" name="content" id="content" value="{{ old('content', '') }}">
+                                <input type="hidden" name="image_path" id="image_path" value="{{ old('image_path', '') }}">
 
                                 <x-select name="category_id"
                                           label="Категория"
                                           :messages="$errors->get('category_id')">
                                     @foreach($categories as $category)
                                         <option value="{{ $category->id }}"
-                                                @selected((int)old('category_id') === $category->id)>{{ $category->title }}</option>
+                                            @selected((int)old('category_id') === $category->id)>{{ $category->title }}</option>
                                     @endforeach
                                 </x-select>
-
-                                <x-input-file name="image"
-                                              label="Превью"
-                                              help="Допустимый формат: PNG,JPEG,WEBP"
-                                              :messages="$errors->get('image')"/>
 
                                 <x-input-switch name="is_active"
                                                 label="Активность"
@@ -62,4 +60,12 @@
         </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
+
+    @push('scripts')
+        <script>
+            window.pageConfig = {
+                uploadImageType: 'articles',
+            };
+        </script>
+    @endpush
 </x-app-layout>

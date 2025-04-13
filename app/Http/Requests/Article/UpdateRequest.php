@@ -4,6 +4,8 @@ namespace App\Http\Requests\Article;
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 
 class UpdateRequest extends FormRequest
@@ -39,13 +41,29 @@ class UpdateRequest extends FormRequest
             ],
             'content' => ['required', 'string'],
             'category_id' => ['required', 'integer', 'exists:categories,id'],
-            'image' => [
-                'nullable',
-                'image',
-                'extensions:png,jpeg,webp',
+            'image_path' => [
+                'required',
+                'string',
+                Rule::unique('articles', 'image_path')->ignore($this->article),
+                function ($attribute, $value, $fail) {
+                    // Проверка, существует ли файл в диске "public"
+                    if (!Storage::disk('public')->exists($value)) {
+                        $fail('Изображение не найдено или уже удалено.');
+                    }
+                },
             ],
             'is_active' => ['nullable', 'string', 'in:on'],
         ];
+    }
+
+    public function prepareDataForUpdate(): array
+    {
+        $data = $this->validated();
+
+        $data['slug'] = $data['slug'] ?? Str::slug($data['title']);
+        $data['is_active'] = !empty($data['is_active']);
+
+        return $data;
     }
 
     protected function failedValidation(Validator $validator): void
