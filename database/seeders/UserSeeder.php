@@ -4,15 +4,12 @@ namespace Database\Seeders;
 
 use App\Enums\User\RoleEnum;
 use App\Models\User;
-
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class UserSeeder extends Seeder
 {
-    /**
-     * Seed the application's database.
-     */
+    private int $userCount = 30;
+
     public function run(): void
     {
         $this->createAdmin();
@@ -32,14 +29,10 @@ class UserSeeder extends Seeder
 
     private function createUsers(): void
     {
-        $numberOfUsers = rand(10, 30);
-        $i = 2;
-
-        while ($i <= $numberOfUsers) {
+        for ($i = 2; $i <= $this->userCount; $i++) {
             User::factory()->create([
                 'order' => $i,
             ]);
-            $i++;
         }
     }
 }
