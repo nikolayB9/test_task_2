@@ -139,13 +139,13 @@ admin@mail.ru
 ### 🔹 Пользователи
 
 - Основная таблица: 
-![User.index](docs/img/user.index.gif)  
+  ![User.index](docs/img/user.index.gif)  
   <br>
 - Добавление пользователя:
-![User.create](docs/img/user.create.gif)  
+  ![User.create](docs/img/user.create.gif)  
   <br>
 - Редактирование пользователя:
-![User.edit](docs/img/user.edit.gif)
+  ![User.edit](docs/img/user.edit.gif)
 
 ---
 
@@ -153,7 +153,7 @@ admin@mail.ru
 
 - Основная таблица:
   ![Category.index](docs/img/category.index.gif)  
-<br>
+  <br>
 - Добавление, редактирование категорий:
   ![Category.create](docs/img/category.create.gif)
 
@@ -162,10 +162,10 @@ admin@mail.ru
 ### 🔹 Статьи
 
 - Основная таблица:
-![Article.index](docs/img/article.index.gif)   
-<br>
+  ![Article.index](docs/img/article.index.gif)   
+  <br>
 - Добавление статьи:
-![Article.create](docs/img/article.create.gif)           
-<br>
+  ![Article.create](docs/img/article.create.gif)           
+  <br>
 - Редактирование статьи:
-![Article.edit](docs/img/article.edit.gif)
+  ![Article.edit](docs/img/article.edit.gif)
